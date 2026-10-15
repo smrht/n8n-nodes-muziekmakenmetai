@@ -123,20 +123,6 @@ export class MuziekMakenMetAi implements INodeType {
 					'Music description in standard mode (max 500 characters) or the full song lyrics in custom mode (max 5,000 characters)',
 			},
 			{
-				displayName: 'Wait for Completion',
-				name: 'waitForCompletion',
-				type: 'boolean',
-				displayOptions: {
-					show: {
-						resource: ['song'],
-						operation: ['create'],
-					},
-				},
-				default: true,
-				description:
-					'Whether to poll the generation every 10 seconds until it succeeds or fails (up to 6 minutes) and return the final result with the audio URLs. When off, the node returns immediately with status "queued". If the song is still processing after 6 minutes, the latest known status is returned and you can fetch it again with Song > Get.',
-			},
-			{
 				displayName: 'Additional Fields',
 				name: 'additionalFields',
 				type: 'collection',
@@ -205,10 +191,14 @@ export class MuziekMakenMetAi implements INodeType {
 					{
 						displayName: 'Language',
 						name: 'language',
-						type: 'string',
+						type: 'options',
+						options: [
+							{ name: 'Dutch', value: 'Nederlands' },
+							{ name: 'English', value: 'Engels' },
+							{ name: 'German', value: 'Duits' },
+						],
 						default: 'Nederlands',
-						description:
-							'Full language name of the vocals, e.g. Nederlands, Engels or Duits. Other languages are allowed. Defaults to "Nederlands". Max 40 characters.',
+						description: 'Language of the vocals. Defaults to Dutch.',
 					},
 					{
 						displayName: 'Model',
@@ -359,6 +349,14 @@ export class MuziekMakenMetAi implements INodeType {
 						default: 'female',
 						description: 'Gender of the vocals. Only used in custom mode.',
 					},
+					{
+						displayName: 'Wait for Completion',
+						name: 'waitForCompletion',
+						type: 'boolean',
+						default: true,
+						description:
+							'Whether to poll the generation every 10 seconds until it succeeds or fails (up to 6 minutes) and return the final result with the audio URLs. When off, the node returns immediately with status "queued". If the song is still processing after 6 minutes, the latest known status is returned and you can fetch it again with Song > Get.',
+					},
 				],
 			},
 
@@ -431,8 +429,8 @@ async function createGeneration(context: IExecuteFunctions, itemIndex: number): 
 		if (!prompt) {
 			throw new NodeOperationError(context.getNode(), 'Prompt is required.', { itemIndex });
 		}
-		const waitForCompletion = context.getNodeParameter('waitForCompletion', itemIndex, true) as boolean;
 		const additional = context.getNodeParameter('additionalFields', itemIndex, {}) as IDataObject;
+		const waitForCompletion = additional.waitForCompletion !== false;
 		const customMode = Boolean(additional.customMode);
 
 		const maxPromptLength = customMode ? 5_000 : 500;

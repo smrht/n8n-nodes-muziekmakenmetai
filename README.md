@@ -33,8 +33,8 @@ n8n installs the package from npm. Community nodes are available on self-hosted 
 Starts a generation with `POST /music/generations/`. Every generation costs 1 credit.
 
 - **Prompt** (required): music description in standard mode (max 500 characters), or the full song lyrics when Custom Mode is on (max 5,000 characters).
-- **Wait for Completion** (default on): polls the generation every 10 seconds for up to 6 minutes and returns the final result, including the audio URLs in `tracks`. If the song is still processing after 6 minutes, the node returns the latest known status instead; fetch the result later with **Song → Get**.
-- **Additional fields**: model (`music-v1`, `music-v1-pro`, `music-v2`, `music-v2-mini`, `music-v2-wild`), Custom Mode, Instrumental, Style, Title, Language, Vocal Gender, Style Weight, Creativity, Audio Weight, Duration, Variety, Negative Tags, Persona ID and Persona Type. Most of these only apply in Custom Mode; the node validates that before calling the API.
+- **Wait for Completion** (in Additional Fields, default on): polls the generation every 10 seconds for up to 6 minutes and returns the final result, including the audio URLs in `tracks`. If the song is still processing after 6 minutes, the node returns the latest known status instead; fetch the result later with **Song → Get**.
+- **Additional fields**: model (`music-v1`, `music-v1-pro`, `music-v2`, `music-v2-mini`, `music-v2-wild`), Custom Mode, Instrumental, Style, Title, Language (Dutch, English or German), Vocal Gender, Style Weight, Creativity, Audio Weight, Duration, Variety, Negative Tags, Persona ID and Persona Type. Most of these only apply in Custom Mode; the node validates that before calling the API.
 
 The node returns the generation object: `id`, `status` (`queued`, `processing`, `succeeded`, `failed`), `model`, `created_at`, `completed_at` and, on success, `tracks` with `audio_url` and `image_url`.
 

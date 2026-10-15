@@ -92,10 +92,12 @@ export class MuziekMakenMetAiTrigger implements INodeType {
 				}
 				const staticData = this.getWorkflowStaticData('node');
 				if (!staticData.webhookUrl) {
+					delete staticData.webhookSigningSecret;
 					return true;
 				}
 				await mmmaiApiRequest(this, 'PUT', '/webhook/', { url: '' });
 				delete staticData.webhookUrl;
+				delete staticData.webhookSigningSecret;
 				return true;
 			},
 		},

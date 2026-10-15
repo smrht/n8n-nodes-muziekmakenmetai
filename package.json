@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-muziekmakenmetai",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "n8n community nodes for the MuziekMakenMetAI API: generate songs, check credits and receive song-finished webhooks.",
 	"license": "MIT",
 	"homepage": "https://muziekmakenmetai.nl/developers/",
