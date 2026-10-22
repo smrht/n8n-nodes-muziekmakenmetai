@@ -120,7 +120,7 @@ export class MuziekMakenMetAiTrigger implements INodeType {
 			throw new NodeOperationError(this.getNode(), 'Raw request body is missing; cannot verify the signature.');
 		}
 
-		if (!verifyWebhookSignature(signingSecret, headers['x-mmai-timestamp'], headers['x-mmai-signature'], rawBody)) {
+		if (!verifyWebhookSignature(signingSecret, headers['x-mmmai-timestamp'], headers['x-mmmai-signature'], rawBody)) {
 			throw new NodeOperationError(
 				this.getNode(),
 				'Invalid webhook signature. The event was not sent by MuziekMakenMetAI with the signing secret stored at activation.',
@@ -129,7 +129,7 @@ export class MuziekMakenMetAiTrigger implements INodeType {
 
 		const body = this.getBodyData();
 		const data = (body.data ?? {}) as IDataObject;
-		const eventId = String(headers['x-mmai-event'] ?? body.id ?? '');
+		const eventId = String(headers['x-mmmai-event'] ?? body.id ?? '');
 		const eventType = String(body.type ?? '');
 
 		return {
